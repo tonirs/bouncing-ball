@@ -24,7 +24,7 @@ public class TerminalGameRenderer implements GameRenderer {
         screenWidth = gameAreaWidth + 2;
         screenHeight = gameAreaHeight + 2;
 
-        header = new String("p/P (pause/resume), s/S (stop)                                           FPS: ");
+        header = new String("p/P (pause/resume), q/Q (quit)                                           FPS: ");
 
         char[] horizontalLineAsArray = new char[screenWidth];
         Arrays.fill(horizontalLineAsArray, '-');
@@ -47,7 +47,7 @@ public class TerminalGameRenderer implements GameRenderer {
         char[][] gameArea = createGameArea();
 
 //        renderables.render(gameArea, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
-        gameArea[(int)(Math.random() * gameAreaHeight)][(int)(Math.random() * gameAreaWidth)] = '*';
+        gameArea[(int) (Math.random() * gameAreaHeight)][(int) (Math.random() * gameAreaWidth)] = '*';
 
         StringBuffer stringBuffer = new StringBuffer(header);
         stringBuffer.append(fps);
@@ -55,7 +55,7 @@ public class TerminalGameRenderer implements GameRenderer {
 
         System.out.println(horizontalLine);
 
-        for (int y = 0 ; y < gameAreaHeight ; ++y) {
+        for (int y = 0; y < gameAreaHeight; ++y) {
             stringBuffer.setLength(0);
             stringBuffer.append('|');
             stringBuffer.append(gameArea[y]);

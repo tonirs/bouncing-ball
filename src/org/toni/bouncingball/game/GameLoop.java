@@ -1,8 +1,5 @@
 package org.toni.bouncingball.game;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 public class GameLoop implements Runnable {
 
     private static final long NANOS_PER_MILLI = 1000000L;
@@ -13,17 +10,16 @@ public class GameLoop implements Runnable {
 
     private final double targetNanosPerFrame;
 
-    private final InputStream inputStream;
-
+    private final InputController inputController;
     private final GameUpdater gameUpdater;
     private final GameRenderer gameRenderer;
 
     public GameLoop(final int targetFps,
-                    final InputStream inputStream,
+                    final InputController inputController,
                     final GameUpdater gameUpdater,
                     final GameRenderer gameRenderer) {
         this.targetNanosPerFrame = NANOS_PER_SECOND / (double) targetFps;
-        this.inputStream = inputStream;
+        this.inputController = inputController;
         this.gameUpdater = gameUpdater;
         this.gameRenderer = gameRenderer;
     }
@@ -76,22 +72,14 @@ public class GameLoop implements Runnable {
     }
 
     private void updateRunFlagsIfInputAvailable() {
-        try {
-            if(inputStream.available() > 0) {
-                final char key = (char)inputStream.read();
-                switch (key) {
-                    case 's':
-                    case 'S':
-                        keepRunning = false;
-                        break;
-                    case 'p':
-                    case 'P':
-                        pause = !pause;
-                        break;
-                }
-            }
-        } catch (final IOException e) {
-            e.printStackTrace();
+        inputController.read();
+
+        if(inputController.hasQuitBeenInput()) {
+            keepRunning = false;
+        }
+
+        if(inputController.hasPauseBeenInput()) {
+            pause = !pause;
         }
     }
 

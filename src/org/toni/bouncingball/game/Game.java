@@ -1,9 +1,12 @@
 package org.toni.bouncingball.game;
 
 import org.toni.bouncingball.game.controller.GameController;
+import org.toni.bouncingball.game.controller.InputStreamInputController;
 import org.toni.bouncingball.game.renderer.TerminalGameRenderer;
 
 public class Game implements Runnable {
+
+    private final InputController inputController;
 
     private final GameUpdater gameUpdater;
 
@@ -15,9 +18,10 @@ public class Game implements Runnable {
     private GameLoop gameLoop;
 
     public Game() {
+        inputController = new InputStreamInputController(System.in);
         gameUpdater = new GameController(GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
         gameRenderer = new TerminalGameRenderer(GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
-        gameLoop = new GameLoop(TARGET_FPS, System.in, gameUpdater, gameRenderer);
+        gameLoop = new GameLoop(TARGET_FPS, inputController, gameUpdater, gameRenderer);
     }
 
     @Override
