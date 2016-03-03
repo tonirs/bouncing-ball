@@ -32,6 +32,7 @@ public class GameLoop implements Runnable {
     public void run() {
         long lastFrameStartNanos = System.nanoTime();
 
+        int fps = 0;
         int frames = 0;
         long nanosElapsedSinceLastFPSReport = 0L;
 
@@ -49,25 +50,27 @@ public class GameLoop implements Runnable {
                 frames++;
                 nanosElapsedSinceLastFPSReport += nanosElapsedSinceLastFrame;
                 if (nanosElapsedSinceLastFPSReport >= NANOS_PER_SECOND) {
-                    System.out.println("FPS: " + frames);
+                    fps = frames;
                     frames = 0;
                     nanosElapsedSinceLastFPSReport = 0L;
                 }
 
                 gameUpdater.update(nanosElapsedSinceLastFrame);
 
-                gameRenderer.render();
+                gameRenderer.render(fps);
             }
 
             // Wait until the target frame end
             final long frameEndNanos = System.nanoTime();
             final long nanosElapsedSinceFrameStart = frameEndNanos - frameStartNanos;
             final double nanosUntilTargetFrameEnd = targetNanosPerFrame - nanosElapsedSinceFrameStart;
-            final long millisUntilTargetFrameEnd = (long)(nanosUntilTargetFrameEnd / NANOS_PER_MILLI);
-            try {
-                Thread.sleep(millisUntilTargetFrameEnd);
-            } catch (final InterruptedException e) {
-                e.printStackTrace();
+            if(nanosUntilTargetFrameEnd > 0) {
+                final long millisUntilTargetFrameEnd = (long) (nanosUntilTargetFrameEnd / NANOS_PER_MILLI);
+                try {
+                    Thread.sleep(millisUntilTargetFrameEnd);
+                } catch (final InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -79,12 +82,10 @@ public class GameLoop implements Runnable {
                 switch (key) {
                     case 's':
                     case 'S':
-                        System.out.println("Stopping...");
                         keepRunning = false;
                         break;
                     case 'p':
                     case 'P':
-                        System.out.println("Pausing/Resuming...");
                         pause = !pause;
                         break;
                 }

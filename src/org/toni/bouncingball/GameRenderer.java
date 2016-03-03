@@ -2,7 +2,7 @@ package org.toni.bouncingball;
 
 public interface GameRenderer {
 
-    void render();
+    void render(final int fps);
 
 }
 

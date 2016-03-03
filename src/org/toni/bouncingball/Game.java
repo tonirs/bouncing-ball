@@ -33,13 +33,45 @@ public class Game implements Runnable, GameUpdater, GameRenderer {
     }
 
     @Override
-    public void update(long delta) {
+    public void update(final long delta) {
 //        ball.update(delta);
     }
 
     @Override
-    public void render() {
-        ;
+    public void render(final int fps) {
+        System.out.println("p/P (pause/resume), s/S (stop)                                             FPS: " + fps);
+        System.out.println("----------------------------------------------------------------------------------");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("|                                                                                |");
+        System.out.println("----------------------------------------------------------------------------------");
     }
 
 }
