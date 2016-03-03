@@ -1,4 +1,4 @@
-package org.toni.bouncingball;
+package org.toni.bouncingball.game;
 
 public interface GameUpdater {
 

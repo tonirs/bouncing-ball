@@ -1,4 +1,4 @@
-package org.toni.bouncingball;
+package org.toni.bouncingball.game.model;
 
 import java.io.IOException;
 import java.io.InputStream;

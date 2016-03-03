@@ -1,4 +1,4 @@
-package org.toni.bouncingball;
+package org.toni.bouncingball.game;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ public class GameLoop implements Runnable {
 
     private final double targetNanosPerFrame;
 
-    private InputStream inputStream;
+    private final InputStream inputStream;
 
     private final GameUpdater gameUpdater;
     private final GameRenderer gameRenderer;
@@ -37,9 +37,9 @@ public class GameLoop implements Runnable {
         long nanosElapsedSinceLastFPSReport = 0L;
 
         while(keepRunning) {
-            updateRunFlagsIfInputAvailable();
-
             final long frameStartNanos = System.nanoTime();
+
+            updateRunFlagsIfInputAvailable();
 
             if(!pause) {
                 // Calculate delta
@@ -78,7 +78,7 @@ public class GameLoop implements Runnable {
     private void updateRunFlagsIfInputAvailable() {
         try {
             if(inputStream.available() > 0) {
-                final char key = (char)System.in.read();
+                final char key = (char)inputStream.read();
                 switch (key) {
                     case 's':
                     case 'S':

@@ -1,65 +1,53 @@
-package org.toni.bouncingball;
+package org.toni.bouncingball.game.renderer;
 
+import org.toni.bouncingball.game.GameRenderer;
 import org.toni.terminal.TerminalController;
 
 import java.util.Arrays;
 
-public class Game implements Runnable, GameUpdater, GameRenderer {
+public class TerminalGameRenderer implements GameRenderer {
 
     private TerminalController terminalController = new TerminalController();
 
-    private static final int TARGET_FPS = 60;
-    private GameLoop gameLoop = new GameLoop(TARGET_FPS, System.in, this, this);
+    private final int gameAreaWidth;
+    private final int gameAreaHeight;
 
-    private static final int SCREEN_WIDTH = 80;
-    private static final int SCREEN_HEIGHT = 30;
-
-    private static final int GAME_AREA_WIDTH = SCREEN_WIDTH - 2;
-    private static final int GAME_AREA_HEIGHT = SCREEN_HEIGHT - 2;
+    private final int screenWidth;
+    private final int screenHeight;
 
     private final String horizontalLine;
     private final String header;
 
-//    private static final int INITIAL_BALL_VELOCITY = 3;
-//    private Ball ball;
+    public TerminalGameRenderer(final int gameAreaWidth, final int gameAreaHeight) {
+        this.gameAreaWidth = gameAreaWidth;
+        this.gameAreaHeight = gameAreaHeight;
+        screenWidth = gameAreaWidth + 2;
+        screenHeight = gameAreaHeight + 2;
 
-    public Game() {
         header = new String("p/P (pause/resume), s/S (stop)                                           FPS: ");
 
-        char[] horizontalLineAsArray = new char[SCREEN_WIDTH];
+        char[] horizontalLineAsArray = new char[screenWidth];
         Arrays.fill(horizontalLineAsArray, '-');
         horizontalLine = new String(horizontalLineAsArray);
 
-//        ball = new Ball(inputStream, INITIAL_BALL_VELOCITY);
     }
 
     @Override
-    public void run() {
-        setUp();
-        gameLoop.run();
-        cleanUp();
-    }
-
-    private void setUp() {
+    public void setUp() {
         terminalController.loadTerminalConfiguration();
         terminalController.setTerminalAsCharacterBuffered();
     }
 
-    private void cleanUp() {
+    @Override
+    public void cleanUp() {
         terminalController.restoreTerminalConfiguration();
     }
 
-    @Override
-    public void update(final long delta) {
-//        ball.update(delta);
-    }
-
-    @Override
     public void render(final int fps) {
         char[][] gameArea = createGameArea();
 
 //        renderables.render(gameArea, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
-gameArea[(int)(Math.random() * GAME_AREA_HEIGHT)][(int)(Math.random() * GAME_AREA_WIDTH)] = '*';
+        gameArea[(int)(Math.random() * gameAreaHeight)][(int)(Math.random() * gameAreaWidth)] = '*';
 
         StringBuffer stringBuffer = new StringBuffer(header);
         stringBuffer.append(fps);
@@ -67,7 +55,7 @@ gameArea[(int)(Math.random() * GAME_AREA_HEIGHT)][(int)(Math.random() * GAME_ARE
 
         System.out.println(horizontalLine);
 
-        for (int y = 0 ; y < GAME_AREA_HEIGHT ; ++y) {
+        for (int y = 0 ; y < gameAreaHeight ; ++y) {
             stringBuffer.setLength(0);
             stringBuffer.append('|');
             stringBuffer.append(gameArea[y]);
@@ -79,8 +67,8 @@ gameArea[(int)(Math.random() * GAME_AREA_HEIGHT)][(int)(Math.random() * GAME_ARE
     }
 
     private char[][] createGameArea() {
-        char[][] gameArea = new char[GAME_AREA_HEIGHT][GAME_AREA_WIDTH];
-        for (int y = 0 ; y < GAME_AREA_HEIGHT ; ++y) {
+        char[][] gameArea = new char[gameAreaHeight][gameAreaWidth];
+        for (int y = 0 ; y < gameAreaHeight ; ++y) {
             Arrays.fill(gameArea[y], ' ');
         }
         return gameArea;
