@@ -1,4 +1,4 @@
-package org.toni.bouncingball.game;
+package org.toni.bouncingball.game.controller;
 
 public interface InputController {
 

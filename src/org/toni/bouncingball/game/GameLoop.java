@@ -1,9 +1,10 @@
 package org.toni.bouncingball.game;
 
-public class GameLoop implements Runnable {
+import org.toni.bouncingball.game.controller.InputController;
+import org.toni.bouncingball.game.renderer.GameRenderer;
+import org.toni.bouncingball.game.updater.GameUpdater;
 
-    private static final long NANOS_PER_MILLI = 1000000L;
-    private static final long NANOS_PER_SECOND = 1000000000L;
+public class GameLoop implements Runnable {
 
     private boolean keepRunning = true;
     private boolean pause = false;
@@ -18,7 +19,7 @@ public class GameLoop implements Runnable {
                     final InputController inputController,
                     final GameUpdater gameUpdater,
                     final GameRenderer gameRenderer) {
-        this.targetNanosPerFrame = NANOS_PER_SECOND / (double) targetFps;
+        this.targetNanosPerFrame = Game.NANOS_PER_SECOND / (double) targetFps;
         this.inputController = inputController;
         this.gameUpdater = gameUpdater;
         this.gameRenderer = gameRenderer;
@@ -45,7 +46,7 @@ public class GameLoop implements Runnable {
                 // Update frame counters and report FPS every second
                 frames++;
                 nanosElapsedSinceLastFPSReport += nanosElapsedSinceLastFrame;
-                if (nanosElapsedSinceLastFPSReport >= NANOS_PER_SECOND) {
+                if (nanosElapsedSinceLastFPSReport >= Game.NANOS_PER_SECOND) {
                     fps = frames;
                     frames = 0;
                     nanosElapsedSinceLastFPSReport = 0L;
@@ -61,7 +62,7 @@ public class GameLoop implements Runnable {
             final long nanosElapsedSinceFrameStart = frameEndNanos - frameStartNanos;
             final double nanosUntilTargetFrameEnd = targetNanosPerFrame - nanosElapsedSinceFrameStart;
             if(nanosUntilTargetFrameEnd > 0) {
-                final long millisUntilTargetFrameEnd = (long) (nanosUntilTargetFrameEnd / NANOS_PER_MILLI);
+                final long millisUntilTargetFrameEnd = (long) (nanosUntilTargetFrameEnd / Game.NANOS_PER_MILLI);
                 try {
                     Thread.sleep(millisUntilTargetFrameEnd);
                 } catch (final InterruptedException e) {

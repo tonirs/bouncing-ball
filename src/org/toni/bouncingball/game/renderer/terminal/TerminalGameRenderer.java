@@ -1,16 +1,13 @@
-package org.toni.bouncingball.game.renderer;
+package org.toni.bouncingball.game.renderer.terminal;
 
-import org.toni.bouncingball.game.GameRenderer;
+import org.toni.bouncingball.game.renderer.GameRenderer;
 import org.toni.terminal.TerminalController;
 
 import java.util.Arrays;
 
-public class TerminalGameRenderer implements GameRenderer {
+public class TerminalGameRenderer extends GameRenderer<Character> {
 
     private TerminalController terminalController = new TerminalController();
-
-    private final int gameAreaWidth;
-    private final int gameAreaHeight;
 
     private final int screenWidth;
     private final int screenHeight;
@@ -18,9 +15,9 @@ public class TerminalGameRenderer implements GameRenderer {
     private final String horizontalLine;
     private final String header;
 
-    public TerminalGameRenderer(final int gameAreaWidth, final int gameAreaHeight) {
-        this.gameAreaWidth = gameAreaWidth;
-        this.gameAreaHeight = gameAreaHeight;
+    public TerminalGameRenderer(final int gameAreaHeight, final int gameAreaWidth) {
+        super(Character.class, gameAreaHeight, gameAreaWidth, ' ');
+
         screenWidth = gameAreaWidth + 2;
         screenHeight = gameAreaHeight + 2;
 
@@ -29,25 +26,26 @@ public class TerminalGameRenderer implements GameRenderer {
         char[] horizontalLineAsArray = new char[screenWidth];
         Arrays.fill(horizontalLineAsArray, '-');
         horizontalLine = new String(horizontalLineAsArray);
-
     }
 
     @Override
     public void setUp() {
+        super.setUp();
+
         terminalController.loadTerminalConfiguration();
         terminalController.setTerminalAsCharacterBuffered();
     }
 
     @Override
     public void cleanUp() {
+        super.cleanUp();
+
         terminalController.restoreTerminalConfiguration();
     }
 
+    @Override
     public void render(final int fps) {
-        char[][] gameArea = createGameArea();
-
-//        renderables.render(gameArea, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
-        gameArea[(int) (Math.random() * gameAreaHeight)][(int) (Math.random() * gameAreaWidth)] = '*';
+        super.render(fps);
 
         StringBuffer stringBuffer = new StringBuffer(header);
         stringBuffer.append(fps);
@@ -55,23 +53,18 @@ public class TerminalGameRenderer implements GameRenderer {
 
         System.out.println(horizontalLine);
 
-        for (int y = 0; y < gameAreaHeight; ++y) {
+        for (int y = 0; y < genericGameArea.getHeight(); ++y) {
             stringBuffer.setLength(0);
             stringBuffer.append('|');
-            stringBuffer.append(gameArea[y]);
+            for (int x = 0; x < genericGameArea.getWidth(); ++x) {
+                final Character[] line = genericGameArea.getGameArea()[y];
+                stringBuffer.append(line[x].charValue());
+            }
             stringBuffer.append('|');
             System.out.println(stringBuffer);
         }
 
         System.out.println(horizontalLine);
-    }
-
-    private char[][] createGameArea() {
-        char[][] gameArea = new char[gameAreaHeight][gameAreaWidth];
-        for (int y = 0 ; y < gameAreaHeight ; ++y) {
-            Arrays.fill(gameArea[y], ' ');
-        }
-        return gameArea;
     }
 
 }

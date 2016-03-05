@@ -1,7 +1,5 @@
 package org.toni.bouncingball.game.controller;
 
-import org.toni.bouncingball.game.InputController;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
