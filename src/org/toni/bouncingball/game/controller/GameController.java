@@ -19,7 +19,7 @@ public class GameController implements GameUpdater {
     public GameController(final GameRenderer gameRenderer, int gameAreaHeight, int gameAreaWidth) {
         this.gameRenderer = gameRenderer;
 
-        ball = new Ball(null, BALL_VY_0, BALL_VX_0, BALL_Y_0, BALL_X_0, 0.0, gameAreaHeight, 0.0, gameAreaWidth);
+        ball = new Ball(BALL_VY_0, BALL_VX_0, BALL_Y_0, BALL_X_0, 0.0, gameAreaHeight, 0.0, gameAreaWidth);
         final Renderable<Character> ballRenderable = new TerminalBallRenderable(ball);
 
         this.gameRenderer.addRenderable(ballRenderable);

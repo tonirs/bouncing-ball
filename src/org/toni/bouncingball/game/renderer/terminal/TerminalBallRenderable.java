@@ -13,10 +13,20 @@ public class TerminalBallRenderable extends TerminalRenderable {
     @Override
     protected void render(final Character[][] gameArea) {
         final int y = (int)ball.getY();
-        if(y >= 0 && y < gameArea.length) {
+        final int maxY = gameArea.length - ball.getHeigth();
+        if(y >= 0 && y <= maxY) {
             final int x = (int)ball.getX();
-            if(x >= 0 && x < gameArea[0].length) {
-                gameArea[y][x] = '*';
+            final int maxX = gameArea[0].length - ball.getWidth();
+            if(x >= 0 && x <= maxX) {
+                for (int j = 0 ; j < ball.getHeigth() ; ++j) {
+                    for (int i = 0 ; i < ball.getWidth() ; ++i) {
+                        gameArea[y + j][x + i] = '*';
+                    }
+                }
+                gameArea[y][x] = ' ';
+                gameArea[y][x + ball.getWidth() - 1] = ' ';
+                gameArea[y + ball.getHeigth() - 1][x] = ' ';
+                gameArea[y + ball.getHeigth() - 1][x + ball.getWidth() - 1] = ' ';
             }
         }
     }

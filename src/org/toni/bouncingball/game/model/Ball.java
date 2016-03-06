@@ -2,11 +2,10 @@ package org.toni.bouncingball.game.model;
 
 import org.toni.bouncingball.game.Game;
 
-import java.io.InputStream;
-
 public class Ball {
 
-    private final InputStream inputStream;
+    private static final int BALL_HEIGTH = 3;
+    private static final int BALL_WIDTH = 7;
 
     private double vY;
     private double vX;
@@ -19,20 +18,18 @@ public class Ball {
     private final double minX;
     private final double maxX;
 
-    public Ball(final InputStream inputStream,
-                final double vY0, final double vX0,
+    public Ball(final double vY0, final double vX0,
                 final double Y0, final double X0,
                 final double minY, final double maxY,
                 final double minX, final double maxX) {
-        this.inputStream = inputStream;
         this.vY = vY0;
         this.vX = vX0;
         this.y = Y0;
         this.x = X0;
         this.minY = minY;
-        this.maxY = maxY;
+        this.maxY = maxY - BALL_HEIGTH + 1;
         this.minX = minX;
-        this.maxX = maxX;
+        this.maxX = maxX - BALL_WIDTH + 1;
     }
 
     public double getY() {
@@ -41,6 +38,14 @@ public class Ball {
 
     public double getX() {
         return x;
+    }
+
+    public int getHeigth() {
+        return BALL_HEIGTH;
+    }
+
+    public int getWidth() {
+        return BALL_WIDTH;
     }
 
     public void update(final double deltaInNanos) {
