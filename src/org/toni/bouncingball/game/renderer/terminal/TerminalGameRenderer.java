@@ -13,7 +13,7 @@ public class TerminalGameRenderer extends GameRenderer<Character> {
     private final int screenHeight;
 
     private final String horizontalLine;
-    private final String header;
+    private final String headerFormat;
 
     public TerminalGameRenderer(final int gameAreaHeight, final int gameAreaWidth) {
         super(Character.class, gameAreaHeight, gameAreaWidth, ' ');
@@ -21,7 +21,7 @@ public class TerminalGameRenderer extends GameRenderer<Character> {
         screenWidth = gameAreaWidth + 2;
         screenHeight = gameAreaHeight + 2;
 
-        header = new String("p/P (pause/resume), q/Q (quit)                                           FPS: ");
+        headerFormat = new String("FPS: %2d, pause/resume: p/P, quit: q/Q\n");
 
         char[] horizontalLineAsArray = new char[screenWidth];
         Arrays.fill(horizontalLineAsArray, '-');
@@ -47,15 +47,12 @@ public class TerminalGameRenderer extends GameRenderer<Character> {
     public void render(final int fps) {
         super.render(fps);
 
-        StringBuffer stringBuffer = new StringBuffer(header);
-        stringBuffer.append(fps);
-        System.out.println(stringBuffer.toString());
+        System.out.printf(headerFormat, fps);
 
         System.out.println(horizontalLine);
 
         for (int y = 0; y < genericGameArea.getHeight(); ++y) {
-            stringBuffer.setLength(0);
-            stringBuffer.append('|');
+            StringBuffer stringBuffer = new StringBuffer("|");
             for (int x = 0; x < genericGameArea.getWidth(); ++x) {
                 final Character[] line = genericGameArea.getGameArea()[y];
                 stringBuffer.append(line[x].charValue());
