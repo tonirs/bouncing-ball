@@ -89,10 +89,10 @@ public class GameLoop implements Runnable, InputEventHandler {
     @Override
     public void handle(final InputEvent inputEvent) {
         switch (inputEvent) {
-            case QUIT:
+            case X:
                 keepRunning = false;
                 break;
-            case PAUSE:
+            case P:
                 pause = !pause;
                 break;
         }

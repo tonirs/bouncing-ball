@@ -30,8 +30,32 @@ public class GameItem {
         return y;
     }
 
+    public void increaseY() {
+        if(y < maxY) {
+            ++y;
+        }
+    }
+
+    public void decreaseY() {
+        if(y > 0.0) {
+            --y;
+        }
+    }
+
     public double getX() {
         return x;
+    }
+
+    public void increaseX() {
+        if(x < maxX) {
+            ++x;
+        }
+    }
+
+    public void decreaseX() {
+        if(x > 0.0) {
+            --x;
+        }
     }
 
     public int getHeight() {

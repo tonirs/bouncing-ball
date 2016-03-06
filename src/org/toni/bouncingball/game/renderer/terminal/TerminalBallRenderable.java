@@ -23,10 +23,14 @@ public class TerminalBallRenderable extends TerminalRenderable {
                         gameArea[y + j][x + i] = '*';
                     }
                 }
-                gameArea[y][x] = ' ';
-                gameArea[y][x + ball.getWidth() - 1] = ' ';
-                gameArea[y + ball.getHeight() - 1][x] = ' ';
-                gameArea[y + ball.getHeight() - 1][x + ball.getWidth() - 1] = ' ';
+                if(ball.getWidth() > 2) {
+                    gameArea[y][x] = ' ';
+                    gameArea[y][x + ball.getWidth() - 1] = ' ';
+                }
+                if(ball.getHeight() > 2) {
+                    gameArea[y + ball.getHeight() - 1][x] = ' ';
+                    gameArea[y + ball.getHeight() - 1][x + ball.getWidth() - 1] = ' ';
+                }
             }
         }
     }

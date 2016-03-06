@@ -21,11 +21,17 @@ public class InputStreamInputController extends InputController {
             while(inputStream.available() > 0) {
                 char key = (char)inputStream.read();
                 switch (Character.toLowerCase(key)) {
-                    case 'q':
-                        inputEvents.add(InputEvent.QUIT);
+                    case 'x':
+                        inputEvents.add(InputEvent.X);
                         break;
                     case 'p':
-                        inputEvents.add(InputEvent.PAUSE);
+                        inputEvents.add(InputEvent.P);
+                        break;
+                    case 'q':
+                        inputEvents.add(InputEvent.Q);
+                        break;
+                    case 'a':
+                        inputEvents.add(InputEvent.A);
                         break;
                     case '+':
                         inputEvents.add(InputEvent.PLUS);
