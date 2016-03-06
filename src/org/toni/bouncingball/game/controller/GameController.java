@@ -64,9 +64,11 @@ public class GameController implements GameUpdater, InputEventHandler {
     @Override
     public void handle(final InputEvent inputEvent) {
         switch (inputEvent) {
-            case QUIT:
+            case PLUS:
+                ball.increaseVelocity();
                 break;
-            case PAUSE:
+            case MINUS:
+                ball.decreaseVelocity();
                 break;
         }
     }

@@ -27,6 +27,12 @@ public class InputStreamInputController extends InputController {
                     case 'p':
                         inputEvents.add(InputEvent.PAUSE);
                         break;
+                    case '+':
+                        inputEvents.add(InputEvent.PLUS);
+                        break;
+                    case '-':
+                        inputEvents.add(InputEvent.MINUS);
+                        break;
                 }
             }
         } catch (final IOException e) {

@@ -49,27 +49,8 @@ public class Ball {
     }
 
     public void update(final double deltaInNanos) {
-//        updateVelocityIfInputAvailable();
         updatePosition(deltaInNanos);
     }
-
-//    private void updateVelocityIfInputAvailable() {
-//        try {
-//            if(inputStream.available() > 0) {
-//                final char key = (char)System.in.read();
-//                switch (key) {
-//                    case '+':
-////                        keepRunning = false;
-//                        break;
-//                    case '-':
-////                        pause = !pause;
-//                        break;
-//                }
-//            }
-//        } catch (final IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private void updatePosition(final double deltaInNanos) {
         y += vY * deltaInNanos / Game.NANOS_PER_SECOND;
@@ -81,6 +62,16 @@ public class Ball {
         if(x > maxX || x < minX) {
             vX *= -1;
         }
+    }
+
+    public void increaseVelocity() {
+        vY += vY > 0.0 ? 1.0 : -1.0;
+        vX += vX > 0.0 ? 1.0 : -1.0;
+    }
+
+    public void decreaseVelocity() {
+        vY -= vY > 0.0 ? 1.0 : -1.0;
+        vX -= vX > 0.0 ? 1.0 : -1.0;
     }
 
 }
