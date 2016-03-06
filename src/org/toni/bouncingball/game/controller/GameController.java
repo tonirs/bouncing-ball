@@ -10,8 +10,8 @@ public class GameController implements GameUpdater {
 
     private final GameRenderer gameRenderer;
 
-    private static final double BALL_VY_0 = 2.0;
-    private static final double BALL_VX_0 = 4.0;
+    private static final double BALL_VY_0 = 15.0;
+    private static final double BALL_VX_0 = 20.0;
     private static final double BALL_Y_0 = 0;
     private static final double BALL_X_0 = 0;
     private Ball ball;

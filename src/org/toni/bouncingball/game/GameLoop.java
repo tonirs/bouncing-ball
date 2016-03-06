@@ -36,9 +36,16 @@ public class GameLoop implements Runnable {
         while(keepRunning) {
             final long frameStartNanos = System.nanoTime();
 
+            final boolean wasPaused = pause;
             updateRunFlagsIfInputAvailable();
 
             if(!pause) {
+                if(wasPaused) {
+                    lastFrameStartNanos = frameStartNanos;
+                    frames = 0;
+                    nanosElapsedSinceLastFPSReport = 0L;
+                }
+
                 // Calculate delta
                 final long nanosElapsedSinceLastFrame = frameStartNanos - lastFrameStartNanos;
                 lastFrameStartNanos = frameStartNanos;
