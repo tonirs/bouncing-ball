@@ -1,10 +1,12 @@
 package org.toni.bouncingball.game;
 
-import org.toni.bouncingball.game.controller.InputController;
+import org.toni.bouncingball.game.event.input.InputEvent;
+import org.toni.bouncingball.game.event.input.InputEventHandler;
+import org.toni.bouncingball.game.controller.input.InputController;
 import org.toni.bouncingball.game.renderer.GameRenderer;
 import org.toni.bouncingball.game.updater.GameUpdater;
 
-public class GameLoop implements Runnable {
+public class GameLoop implements Runnable, InputEventHandler {
 
     private boolean keepRunning = true;
     private boolean pause = false;
@@ -27,6 +29,8 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
+        inputController.addInputEventHandler(this);
+
         long lastFrameStartNanos = System.nanoTime();
 
         int fps = 0;
@@ -37,7 +41,8 @@ public class GameLoop implements Runnable {
             final long frameStartNanos = System.nanoTime();
 
             final boolean wasPaused = pause;
-            updateRunFlagsIfInputAvailable();
+
+            inputController.update(0L);
 
             if(!pause) {
                 if(wasPaused) {
@@ -77,17 +82,19 @@ public class GameLoop implements Runnable {
                 }
             }
         }
+
+        inputController.removeInputEventHandler(this);
     }
 
-    private void updateRunFlagsIfInputAvailable() {
-        inputController.read();
-
-        if(inputController.hasQuitBeenInput()) {
-            keepRunning = false;
-        }
-
-        if(inputController.hasPauseBeenInput()) {
-            pause = !pause;
+    @Override
+    public void handle(final InputEvent inputEvent) {
+        switch (inputEvent) {
+            case QUIT:
+                keepRunning = false;
+                break;
+            case PAUSE:
+                pause = !pause;
+                break;
         }
     }
 

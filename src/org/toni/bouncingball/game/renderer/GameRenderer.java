@@ -9,16 +9,16 @@ public abstract class GameRenderer<T> {
 
     private final T gameAreaInitialValue;
 
-    private List<Renderable> renderables;
+    private List<Renderable> renderables = null;
 
     protected GameRenderer(final Class<T> gameAreaClass, final int gameAreaHeight, final int gameAreaWidth,
                            final T gameAreaInitialValue) {
         genericGameArea = new GenericGameArea<T>(gameAreaClass, gameAreaHeight, gameAreaWidth);
         this.gameAreaInitialValue = gameAreaInitialValue;
-        renderables = new ArrayList<>();
     }
 
     public void setUp() {
+        renderables = new ArrayList<>();
     }
 
     public void cleanUp() {

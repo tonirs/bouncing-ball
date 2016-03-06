@@ -1,11 +1,10 @@
 package org.toni.bouncingball.game;
 
 import org.toni.bouncingball.game.controller.GameController;
-import org.toni.bouncingball.game.controller.InputController;
-import org.toni.bouncingball.game.controller.InputStreamInputController;
+import org.toni.bouncingball.game.controller.input.InputController;
+import org.toni.bouncingball.game.controller.input.InputStreamInputController;
 import org.toni.bouncingball.game.renderer.GameRenderer;
 import org.toni.bouncingball.game.renderer.terminal.TerminalGameRenderer;
-import org.toni.bouncingball.game.updater.GameUpdater;
 
 public class Game implements Runnable {
 
@@ -18,7 +17,7 @@ public class Game implements Runnable {
     private static final int GAME_AREA_WIDTH = 78;
     private final GameRenderer gameRenderer;
 
-    private final GameUpdater gameUpdater;
+    private final GameController gameController;
 
     private static final int TARGET_FPS = 60;
     private GameLoop gameLoop;
@@ -26,14 +25,18 @@ public class Game implements Runnable {
     public Game() {
         inputController = new InputStreamInputController(System.in);
         gameRenderer = new TerminalGameRenderer(GAME_AREA_HEIGHT, GAME_AREA_WIDTH);
-        gameUpdater = new GameController(gameRenderer, GAME_AREA_HEIGHT, GAME_AREA_WIDTH);
-        gameLoop = new GameLoop(TARGET_FPS, inputController, gameUpdater, gameRenderer);
+        gameController = new GameController(inputController, gameRenderer, GAME_AREA_HEIGHT, GAME_AREA_WIDTH);
+        gameLoop = new GameLoop(TARGET_FPS, inputController, gameController, gameRenderer);
     }
 
     @Override
     public void run() {
         gameRenderer.setUp();
+        gameController.setUp();
+
         gameLoop.run();
+
+        gameController.cleanUp();
         gameRenderer.cleanUp();
     }
 
