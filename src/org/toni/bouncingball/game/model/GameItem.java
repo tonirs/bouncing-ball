@@ -46,6 +46,10 @@ public class GameItem {
         return x;
     }
 
+    public void setX(final double x) {
+        this.x = x;
+    }
+
     public void increaseX() {
         if(x < maxX) {
             ++x;

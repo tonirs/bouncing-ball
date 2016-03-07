@@ -13,7 +13,7 @@ public class Game implements Runnable {
 
     private final InputController inputController;
 
-    private static final int GAME_AREA_HEIGHT = 28;
+    private static final int GAME_AREA_HEIGHT = 27;
     private static final int GAME_AREA_WIDTH = 118;
     private final GameRenderer gameRenderer;
 

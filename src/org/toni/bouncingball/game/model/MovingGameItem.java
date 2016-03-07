@@ -49,9 +49,12 @@ public class MovingGameItem extends GameItem {
 
         x += vX * deltaInNanos / Game.NANOS_PER_SECOND;
         if(x > maxX || x < minX) {
-            vX *= -1;
+            invertVelocityX();
         }
     }
 
+    public void invertVelocityX() {
+        vX *= -1;
+    }
 }
 
