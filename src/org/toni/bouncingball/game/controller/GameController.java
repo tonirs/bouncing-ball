@@ -4,11 +4,13 @@ import org.toni.bouncingball.game.controller.input.InputController;
 import org.toni.bouncingball.game.event.input.InputEvent;
 import org.toni.bouncingball.game.event.input.InputEventHandler;
 import org.toni.bouncingball.game.model.Ball;
+import org.toni.bouncingball.game.model.Lives;
 import org.toni.bouncingball.game.model.Paddle;
 import org.toni.bouncingball.game.model.Score;
 import org.toni.bouncingball.game.renderer.terminal.TerminalBallRenderable;
 import org.toni.bouncingball.game.renderer.GameRenderer;
 import org.toni.bouncingball.game.renderer.Renderable;
+import org.toni.bouncingball.game.renderer.terminal.TerminalLivesRenderable;
 import org.toni.bouncingball.game.renderer.terminal.TerminalPaddleRenderable;
 import org.toni.bouncingball.game.renderer.terminal.TerminalScoreRenderable;
 import org.toni.bouncingball.game.updater.GameUpdater;
@@ -22,12 +24,17 @@ public class GameController implements GameUpdater, InputEventHandler {
     private final double maxY;
     private final double maxX;
 
-    private static final double SCORE_Y_0 = 0.0;
-    private static final double SCORE_X_0 = 1.0;
-    private Score score = null;
-    private Renderable<Character> scoreRenderable = null;
+    private static final double LIVES_Y_0 = 0.0;
+    private static final double LIVES_X_0 = 1.0;
+    private Lives lives = null;
+    private Renderable<Character> livesRenderable = null;
 
-    private static final double BALL_VY_0 = 15.0;
+	private static final double SCORE_Y_0 = 1.0;
+	private static final double SCORE_X_0 = 1.0;
+	private Score score = null;
+	private Renderable<Character> scoreRenderable = null;
+
+	private static final double BALL_VY_0 = 15.0;
     private static final double BALL_VX_0 = 20.0;
     private static final double BALL_Y_0 = 15.0;
     private static final double BALL_X_0 = 100.0;
@@ -51,11 +58,15 @@ public class GameController implements GameUpdater, InputEventHandler {
 
     @Override
     public void setUp() {
-        score = new Score(SCORE_Y_0, SCORE_X_0, 0.0, maxY, 0.0, maxX);
-        scoreRenderable = new TerminalScoreRenderable(score);
-        gameRenderer.addRenderable(scoreRenderable);
+        lives = new Lives(LIVES_Y_0, LIVES_X_0, 0.0, maxY, 0.0, maxX);
+        livesRenderable = new TerminalLivesRenderable(lives);
+        gameRenderer.addRenderable(livesRenderable);
 
-        ball = new Ball(BALL_VY_0, BALL_VX_0, BALL_Y_0, BALL_X_0, 0.0, maxY, 0.0, maxX);
+	    score = new Score(SCORE_Y_0, SCORE_X_0, 0.0, maxY, 0.0, maxX);
+	    scoreRenderable = new TerminalScoreRenderable(score);
+	    gameRenderer.addRenderable(scoreRenderable);
+
+	    ball = new Ball(BALL_VY_0, BALL_VX_0, BALL_Y_0, BALL_X_0, 0.0, maxY, 0.0, maxX);
         ballRenderable = new TerminalBallRenderable(ball);
         gameRenderer.addRenderable(ballRenderable);
 
@@ -86,44 +97,45 @@ public class GameController implements GameUpdater, InputEventHandler {
         paddle.update(deltaInNanos);
 
         if(Math.floor(ball.getX()) < 0.0) {
-            score.increaseValue();
+            lives.decreaseValue();
             ball.setX(BALL_X_0);
-        } else {
-            bounceBallIfBumpedOnPaddle();
+        } else if(bounceBallIfBumpedOnPaddle()) {
+	        score.increaseValue();
         }
     }
 
-    private void bounceBallIfBumpedOnPaddle() {
+    private boolean bounceBallIfBumpedOnPaddle() {
         final double ballY = Math.floor(ball.getY());
         final double paddleY = Math.floor(paddle.getY());
         final double upperBumpY = paddleY - ball.getHeight();
         if(ballY <= upperBumpY) {
-            return;
+            return false;
         }
 
         final double lowerBumpY = paddleY + paddle.getHeight();
         if(ballY >= lowerBumpY) {
-            return;
+            return false;
         }
 
         final double ballX = Math.floor(ball.getX());
         final double paddleX = Math.floor(paddle.getX());
         final double rigthBumpX = paddleX + paddle.getWidth();
         if(ballX > rigthBumpX) {
-            return;
+            return false;
         }
 
         if(ballX > paddleX) {
             ball.invertVelocityX();
-            return;
+            return true;
         }
 
         final double leftBumpX = paddleX - ball.getWidth();
         if(ballX < leftBumpX) {
-            return;
+            return false;
         }
 
         ball.invertVelocityX();
+	    return false;
     }
 
     @Override
