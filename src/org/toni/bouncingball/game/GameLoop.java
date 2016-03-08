@@ -35,7 +35,7 @@ public class GameLoop implements Runnable, InputEventHandler {
 
         int fps = 0;
         int frames = 0;
-        long nanosElapsedSinceLastFPSReport = 0L;
+        long lastFPSReportNanos = lastFrameStartNanos;
 
         while(keepRunning) {
             final long frameStartNanos = System.nanoTime();
@@ -48,7 +48,6 @@ public class GameLoop implements Runnable, InputEventHandler {
                 if(wasPaused) {
                     lastFrameStartNanos = frameStartNanos;
                     frames = 0;
-                    nanosElapsedSinceLastFPSReport = 0L;
                 }
 
                 // Calculate delta
@@ -57,11 +56,10 @@ public class GameLoop implements Runnable, InputEventHandler {
 
                 // Update frame counters and report FPS every second
                 frames++;
-                nanosElapsedSinceLastFPSReport += nanosElapsedSinceLastFrame;
-                if (nanosElapsedSinceLastFPSReport >= Game.NANOS_PER_SECOND) {
+                if (frameStartNanos - lastFPSReportNanos >= Game.NANOS_PER_SECOND) {
                     fps = frames;
                     frames = 0;
-                    nanosElapsedSinceLastFPSReport = 0L;
+                    lastFPSReportNanos = frameStartNanos;
                 }
 
                 gameUpdater.update(nanosElapsedSinceLastFrame);
@@ -71,8 +69,7 @@ public class GameLoop implements Runnable, InputEventHandler {
 
             // Wait until the target frame end
             final long frameEndNanos = System.nanoTime();
-            final long nanosElapsedSinceFrameStart = frameEndNanos - frameStartNanos;
-            final double nanosUntilTargetFrameEnd = targetNanosPerFrame - nanosElapsedSinceFrameStart;
+            final double nanosUntilTargetFrameEnd = lastFPSReportNanos + frames * targetNanosPerFrame - frameEndNanos;
             if(nanosUntilTargetFrameEnd > 0) {
                 final long millisUntilTargetFrameEnd = (long) (nanosUntilTargetFrameEnd / Game.NANOS_PER_MILLI);
                 try {
