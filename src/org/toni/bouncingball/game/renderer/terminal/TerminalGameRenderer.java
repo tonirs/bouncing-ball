@@ -21,7 +21,7 @@ public class TerminalGameRenderer extends GameRenderer<Character> {
         screenWidth = gameAreaWidth + 2;
         screenHeight = gameAreaHeight + 2;
 
-        headerFormat = new String("FPS: %2d, pause/resume: p/P, quit: q/Q\n");
+        headerFormat = new String("FPS: %2d, up; q/Q, down: a/A, pause/resume: p/P, exit: x/X\n");
 
         char[] horizontalLineAsArray = new char[screenWidth];
         Arrays.fill(horizontalLineAsArray, '-');
