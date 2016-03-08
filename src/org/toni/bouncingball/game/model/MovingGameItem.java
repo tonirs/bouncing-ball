@@ -43,12 +43,12 @@ public class MovingGameItem extends GameItem {
 
     private void updatePosition(final double deltaInNanos) {
         y += vY * deltaInNanos / Game.NANOS_PER_SECOND;
-        if(y > maxY || y < minY) {
+        if(Math.floor(y) > maxY || Math.floor(y) < minY) {
             vY *= -1;
         }
 
         x += vX * deltaInNanos / Game.NANOS_PER_SECOND;
-        if(x > maxX || x < minX) {
+        if(Math.floor(x) > maxX || Math.floor(x) < minX) {
             invertVelocityX();
         }
     }

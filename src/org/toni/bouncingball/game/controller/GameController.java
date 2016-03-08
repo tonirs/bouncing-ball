@@ -95,28 +95,32 @@ public class GameController implements GameUpdater, InputEventHandler {
     }
 
     private void bounceBallIfBumpedOnPaddle() {
-        final double upperBumpY = paddle.getY() - ball.getHeight();
-        if(ball.getY() <= upperBumpY) {
+        final double ballY = Math.floor(ball.getY());
+        final double paddleY = Math.floor(paddle.getY());
+        final double upperBumpY = paddleY - ball.getHeight();
+        if(ballY <= upperBumpY) {
             return;
         }
 
-        final double lowerBumpY = paddle.getY() + paddle.getHeight();
-        if(ball.getY() >= lowerBumpY) {
+        final double lowerBumpY = paddleY + paddle.getHeight();
+        if(ballY >= lowerBumpY) {
             return;
         }
 
-        final double rigthBumpX = paddle.getX() + paddle.getWidth();
-        if(ball.getX() > rigthBumpX) {
+        final double ballX = Math.floor(ball.getX());
+        final double paddleX = Math.floor(paddle.getX());
+        final double rigthBumpX = paddleX + paddle.getWidth();
+        if(ballX > rigthBumpX) {
             return;
         }
 
-        if(ball.getX() > paddle.getX()) {
+        if(ballX > paddleX) {
             ball.invertVelocityX();
             return;
         }
 
-        final double leftBumpX = paddle.getX() - ball.getWidth();
-        if(ball.getX() < leftBumpX) {
+        final double leftBumpX = paddleX - ball.getWidth();
+        if(ballX < leftBumpX) {
             return;
         }
 
