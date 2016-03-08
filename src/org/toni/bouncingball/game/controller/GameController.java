@@ -85,8 +85,7 @@ public class GameController implements GameUpdater, InputEventHandler {
         ball.update(deltaInNanos);
         paddle.update(deltaInNanos);
 
-        final double ballLostX = Math.max(paddle.getX() - 2.0, 0.0);
-        if(ball.getX() <= ballLostX) {
+        if(Math.floor(ball.getX()) < 0.0) {
             score.increaseValue();
             ball.setX(BALL_X_0);
         } else {
