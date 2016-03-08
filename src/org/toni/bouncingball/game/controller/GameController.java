@@ -27,24 +27,24 @@ public class GameController implements GameUpdater, InputEventHandler {
     private static final double LIVES_Y_0 = 0.0;
     private static final double LIVES_X_0 = 1.0;
     private Lives lives = null;
-    private Renderable<Character> livesRenderable = null;
+    private Renderable livesRenderable = null;
 
 	private static final double SCORE_Y_0 = 1.0;
 	private static final double SCORE_X_0 = 1.0;
 	private Score score = null;
-	private Renderable<Character> scoreRenderable = null;
+	private Renderable scoreRenderable = null;
 
 	private static final double BALL_VY_0 = 15.0;
     private static final double BALL_VX_0 = 20.0;
     private static final double BALL_Y_0 = 15.0;
     private static final double BALL_X_0 = 100.0;
     private Ball ball = null;
-    private Renderable<Character> ballRenderable = null;
+    private Renderable ballRenderable = null;
 
     private static final double PADDLE_Y_0 = 10.0;
     private static final double PADDLE_X_0 = 10.0;
     private Paddle paddle = null;
-    private Renderable<Character> paddleRenderable = null;
+    private Renderable paddleRenderable = null;
 
     public GameController(final InputController inputController,
                           final GameRenderer gameRenderer, int gameAreaHeight, int gameAreaWidth) {
