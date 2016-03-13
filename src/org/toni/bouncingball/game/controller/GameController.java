@@ -7,17 +7,16 @@ import org.toni.bouncingball.game.model.Ball;
 import org.toni.bouncingball.game.model.Lives;
 import org.toni.bouncingball.game.model.Paddle;
 import org.toni.bouncingball.game.model.Score;
-import org.toni.bouncingball.game.renderer.terminal.TerminalBallRenderable;
 import org.toni.bouncingball.game.renderer.GameRenderer;
 import org.toni.bouncingball.game.renderer.Renderable;
-import org.toni.bouncingball.game.renderer.terminal.TerminalLivesRenderable;
-import org.toni.bouncingball.game.renderer.terminal.TerminalPaddleRenderable;
-import org.toni.bouncingball.game.renderer.terminal.TerminalScoreRenderable;
+import org.toni.bouncingball.game.renderer.RenderableFactory;
 import org.toni.bouncingball.game.updater.GameUpdater;
 
 public class GameController implements GameUpdater, InputEventHandler {
 
     private final InputController inputController;
+
+    private final RenderableFactory renderableFactory;
 
     private final GameRenderer gameRenderer;
 
@@ -47,8 +46,11 @@ public class GameController implements GameUpdater, InputEventHandler {
     private Renderable paddleRenderable = null;
 
     public GameController(final InputController inputController,
+                          final RenderableFactory renderableFactory,
                           final GameRenderer gameRenderer, int gameAreaHeight, int gameAreaWidth) {
         this.inputController = inputController;
+
+        this.renderableFactory = renderableFactory;
 
         this.gameRenderer = gameRenderer;
 
@@ -59,19 +61,19 @@ public class GameController implements GameUpdater, InputEventHandler {
     @Override
     public void setUp() {
         lives = new Lives(LIVES_Y_0, LIVES_X_0, 0.0, maxY, 0.0, maxX);
-        livesRenderable = new TerminalLivesRenderable(lives);
+        livesRenderable = renderableFactory.createLivesRenderable(lives);
         gameRenderer.addRenderable(livesRenderable);
 
 	    score = new Score(SCORE_Y_0, SCORE_X_0, 0.0, maxY, 0.0, maxX);
-	    scoreRenderable = new TerminalScoreRenderable(score);
+	    scoreRenderable = renderableFactory.createScoreRenderable(score);
 	    gameRenderer.addRenderable(scoreRenderable);
 
 	    ball = new Ball(BALL_VY_0, BALL_VX_0, BALL_Y_0, BALL_X_0, 0.0, maxY, 0.0, maxX);
-        ballRenderable = new TerminalBallRenderable(ball);
+        ballRenderable = renderableFactory.createBallRenderable(ball);
         gameRenderer.addRenderable(ballRenderable);
 
         paddle = new Paddle(PADDLE_Y_0, PADDLE_X_0, 0.0, maxY, 0.0, maxX);
-        paddleRenderable = new TerminalPaddleRenderable(paddle);
+        paddleRenderable = renderableFactory.createPaddleRenderable(paddle);
         gameRenderer.addRenderable(paddleRenderable);
 
         inputController.addInputEventHandler(this);
@@ -82,13 +84,20 @@ public class GameController implements GameUpdater, InputEventHandler {
         inputController.removeInputEventHandler(this);
 
         gameRenderer.removeRenderable(paddleRenderable);
-        gameRenderer.removeRenderable(ballRenderable);
-
         paddleRenderable = null;
         paddle = null;
 
+        gameRenderer.removeRenderable(ballRenderable);
         ballRenderable = null;
         ball = null;
+
+        gameRenderer.removeRenderable(scoreRenderable);
+        scoreRenderable = null;
+        score = null;
+
+        gameRenderer.removeRenderable(livesRenderable);
+        livesRenderable = null;
+        lives = null;
     }
 
     @Override

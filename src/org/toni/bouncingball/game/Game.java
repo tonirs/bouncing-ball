@@ -4,7 +4,9 @@ import org.toni.bouncingball.game.controller.GameController;
 import org.toni.bouncingball.game.controller.input.InputController;
 import org.toni.bouncingball.game.controller.input.InputStreamInputController;
 import org.toni.bouncingball.game.renderer.GameRenderer;
+import org.toni.bouncingball.game.renderer.RenderableFactory;
 import org.toni.bouncingball.game.renderer.terminal.TerminalGameRenderer;
+import org.toni.bouncingball.game.renderer.terminal.TerminalRenderableFactory;
 
 public class Game implements Runnable {
 
@@ -12,6 +14,8 @@ public class Game implements Runnable {
     public static final long NANOS_PER_SECOND = 1000000000L;
 
     private final InputController inputController;
+
+    private final RenderableFactory renderableFactory;
 
     private static final int GAME_AREA_HEIGHT = 27;
     private static final int GAME_AREA_WIDTH = 118;
@@ -24,8 +28,9 @@ public class Game implements Runnable {
 
     public Game() {
         inputController = new InputStreamInputController(System.in);
+        renderableFactory = new TerminalRenderableFactory();
         gameRenderer = new TerminalGameRenderer(GAME_AREA_HEIGHT, GAME_AREA_WIDTH);
-        gameController = new GameController(inputController, gameRenderer, GAME_AREA_HEIGHT, GAME_AREA_WIDTH);
+        gameController = new GameController(inputController, renderableFactory, gameRenderer, GAME_AREA_HEIGHT, GAME_AREA_WIDTH);
         gameLoop = new GameLoop(TARGET_FPS, inputController, gameController, gameRenderer);
     }
 
