@@ -5,16 +5,12 @@ import java.util.List;
 
 public abstract class GameRenderer<T> {
 
-    protected GenericGameArea<T> genericGameArea;
-
-    private final T gameAreaInitialValue;
+    protected T renderArea;
 
     private List<Renderable> renderables = null;
 
-    protected GameRenderer(final Class<T> gameAreaClass, final int gameAreaHeight, final int gameAreaWidth,
-                           final T gameAreaInitialValue) {
-        genericGameArea = new GenericGameArea<T>(gameAreaClass, gameAreaHeight, gameAreaWidth);
-        this.gameAreaInitialValue = gameAreaInitialValue;
+    protected GameRenderer(final T renderArea) {
+        this.renderArea = renderArea;
     }
 
     public void setUp() {
@@ -34,9 +30,8 @@ public abstract class GameRenderer<T> {
     }
 
     public void render(final int fps) {
-        genericGameArea.clear(gameAreaInitialValue);
         for (final Renderable renderable : renderables) {
-            renderable.render(genericGameArea);
+            renderable.render(renderArea);
         }
     }
 

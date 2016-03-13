@@ -11,15 +11,15 @@ public class TerminalLivesRenderable extends TerminalRenderable {
     }
 
     @Override
-    protected void render(final Character[][] gameArea) {
+    protected void render(final char[][] renderArea) {
         final int y = (int)lives.getY();
         final int x = (int)lives.getX();
 
         final int value = lives.getValue();
 
-        gameArea[y][x] = 'L';
-        gameArea[y][x + 1] = ' ';
-        gameArea[y][x + 2] = (char)('0' + value);
+        renderArea[y][x] = 'L';
+        renderArea[y][x + 1] = ' ';
+        renderArea[y][x + 2] = (char)('0' + value);
     }
 
 }

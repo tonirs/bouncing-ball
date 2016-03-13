@@ -11,16 +11,16 @@ public class TerminalPaddleRenderable extends TerminalRenderable {
     }
 
     @Override
-    protected void render(final Character[][] gameArea) {
+    protected void render(final char[][] renderArea) {
         final int y = (int)paddle.getY();
-        final int maxY = gameArea.length - paddle.getHeight();
+        final int maxY = renderArea.length - paddle.getHeight();
         if(y >= 0 && y <= maxY) {
             final int x = (int)paddle.getX();
-            final int maxX = gameArea[0].length - paddle.getWidth();
+            final int maxX = renderArea[0].length - paddle.getWidth();
             if(x >= 0 && x <= maxX) {
                 for (int j = 0; j < paddle.getHeight() ; ++j) {
                     for (int i = 0 ; i < paddle.getWidth() ; ++i) {
-                        gameArea[y + j][x + i] = '#';
+                        renderArea[y + j][x + i] = '#';
                     }
                 }
             }

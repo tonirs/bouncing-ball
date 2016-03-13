@@ -5,7 +5,7 @@ import org.toni.terminal.TerminalController;
 
 import java.util.Arrays;
 
-public class TerminalGameRenderer extends GameRenderer<Character> {
+public class TerminalGameRenderer extends GameRenderer<TerminalRenderArea> {
 
     private TerminalController terminalController = new TerminalController();
 
@@ -15,11 +15,11 @@ public class TerminalGameRenderer extends GameRenderer<Character> {
     private final String horizontalLine;
     private final String headerFormat;
 
-    public TerminalGameRenderer(final int gameAreaHeight, final int gameAreaWidth) {
-        super(Character.class, gameAreaHeight, gameAreaWidth, ' ');
+    public TerminalGameRenderer(final int renderAreaHeight, final int renderAreaWidth) {
+        super(new TerminalRenderArea(renderAreaHeight, renderAreaWidth, ' '));
 
-        screenWidth = gameAreaWidth + 2;
-        screenHeight = gameAreaHeight + 2;
+        screenWidth = renderAreaWidth + 2;
+        screenHeight = renderAreaHeight + 2;
 
         headerFormat = new String("FPS: %2d, up; q/Q, down: a/A, pause/resume: p/P, exit: x/X\n");
 
@@ -45,17 +45,19 @@ public class TerminalGameRenderer extends GameRenderer<Character> {
 
     @Override
     public void render(final int fps) {
+        renderArea.clear();
+
         super.render(fps);
 
         System.out.printf(headerFormat, fps);
 
         System.out.println(horizontalLine);
 
-        for (int y = 0; y < genericGameArea.getHeight(); ++y) {
+        for (int y = 0; y < renderArea.getHeight(); ++y) {
             StringBuffer stringBuffer = new StringBuffer("|");
-            for (int x = 0; x < genericGameArea.getWidth(); ++x) {
-                final Character[] line = genericGameArea.getGameArea()[y];
-                stringBuffer.append(line[x].charValue());
+            for (int x = 0; x < renderArea.getWidth(); ++x) {
+                final char[] line = renderArea.getRenderArea()[y];
+                stringBuffer.append(line[x]);
             }
             stringBuffer.append('|');
             System.out.println(stringBuffer);

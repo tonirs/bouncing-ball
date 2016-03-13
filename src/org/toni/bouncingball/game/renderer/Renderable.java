@@ -1,8 +1,8 @@
 package org.toni.bouncingball.game.renderer;
 
-public interface Renderable {
+public interface Renderable<T> {
 
-    void render(final Object gameAreaObject);
+    void render(final T renderArea);
 
 }
 

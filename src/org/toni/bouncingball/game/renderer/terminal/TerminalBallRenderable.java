@@ -11,25 +11,25 @@ public class TerminalBallRenderable extends TerminalRenderable {
     }
 
     @Override
-    protected void render(final Character[][] gameArea) {
+    protected void render(final char[][] renderArea) {
         final int y = (int)ball.getY();
-        final int maxY = gameArea.length - ball.getHeight();
+        final int maxY = renderArea.length - ball.getHeight();
         if(y >= 0 && y <= maxY) {
             final int x = (int)ball.getX();
-            final int maxX = gameArea[0].length - ball.getWidth();
+            final int maxX = renderArea[0].length - ball.getWidth();
             if(x >= 0 && x <= maxX) {
                 for (int j = 0; j < ball.getHeight() ; ++j) {
                     for (int i = 0 ; i < ball.getWidth() ; ++i) {
-                        gameArea[y + j][x + i] = '*';
+                        renderArea[y + j][x + i] = '*';
                     }
                 }
                 if(ball.getWidth() > 2) {
-                    gameArea[y][x] = ' ';
-                    gameArea[y][x + ball.getWidth() - 1] = ' ';
+                    renderArea[y][x] = ' ';
+                    renderArea[y][x + ball.getWidth() - 1] = ' ';
                 }
                 if(ball.getHeight() > 2) {
-                    gameArea[y + ball.getHeight() - 1][x] = ' ';
-                    gameArea[y + ball.getHeight() - 1][x + ball.getWidth() - 1] = ' ';
+                    renderArea[y + ball.getHeight() - 1][x] = ' ';
+                    renderArea[y + ball.getHeight() - 1][x + ball.getWidth() - 1] = ' ';
                 }
             }
         }

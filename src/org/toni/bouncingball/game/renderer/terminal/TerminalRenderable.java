@@ -1,17 +1,15 @@
 package org.toni.bouncingball.game.renderer.terminal;
 
-import org.toni.bouncingball.game.renderer.GenericGameArea;
 import org.toni.bouncingball.game.renderer.Renderable;
 
-public abstract class TerminalRenderable implements Renderable {
+public abstract class TerminalRenderable implements Renderable<TerminalRenderArea> {
 
     @Override
-    public void render(final Object gameAreaObject) {
-        final GenericGameArea<Character> genericGameArea = (GenericGameArea<Character>) gameAreaObject;
-        render(genericGameArea.getGameArea());
+    public void render(final TerminalRenderArea terminalRenderArea) {
+        render(terminalRenderArea.getRenderArea());
     }
 
-    protected abstract void render(final Character[][] gameArea);
+    protected abstract void render(final char[][] renderArea);
 
 }
 
